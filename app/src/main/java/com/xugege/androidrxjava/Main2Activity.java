@@ -8,6 +8,7 @@ import android.view.View;
 import io.reactivex.*;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import java.lang.annotation.Annotation;
@@ -19,53 +20,89 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        Log.i(TAG,"activity 线程："+android.os.Process.myTid());
+        Log.i(TAG, "activity 线程：" + android.os.Process.myTid());
 //        init1();
-        init2();
+//        init2();
+
+        init3();
     }
 
-    private void init2() {
-        Observable.create(new ObservableOnSubscribe<String >() {
+    /**
+     * 异步的观察者模式
+     */
+    private void init3() {
+        Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
-                Log.i(TAG,"发射  1   线程："+android.os.Process.myTid());
                 emitter.onNext("1");
-                Log.i(TAG,"发射  2   线程："+android.os.Process.myTid());
                 emitter.onNext("2");
-                Log.i(TAG,"发射  3   线程："+android.os.Process.myTid());
                 emitter.onNext("3");
-                Log.i(TAG,"发射  onComplete   线程："+android.os.Process.myTid());
+            }
+        }).subscribe(new Consumer<String>() {
+            //只接受onnext事件
+            @Override
+            public void accept(String s) throws Exception {
+                Log.d(TAG, "收到 " + s);
+            }
+        });
+    }
+
+    /**
+     * 异步的观察者模式
+     */
+    private void init2() {
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                Log.i(TAG, "发射  1   线程：" + android.os.Process.myTid());
+                emitter.onNext("1");
+                Log.i(TAG, "发射  2   线程：" + android.os.Process.myTid());
+                emitter.onNext("2");
+                Log.i(TAG, "发射  3   线程：" + android.os.Process.myTid());
+                emitter.onNext("3");
+                Log.i(TAG, "发射  onComplete   线程：" + android.os.Process.myTid());
                 emitter.onComplete();
             }
         })
                 .observeOn(AndroidSchedulers.mainThread())//回调在主线程
                 .subscribeOn(Schedulers.io())//执行在io线程
                 .subscribe(new Observer<String>() {
+
+                    Disposable disposable;
+
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.i(TAG, "onSubscribe ");
+                        disposable = d;
                     }
 
                     @Override
                     public void onNext(String s) {
-                        Log.i(TAG, "onNext "+s);
-                        Log.i(TAG,"onNext 线程："+android.os.Process.myTid());
+                        Log.i(TAG, "onNext " + s);
+                        Log.i(TAG, "onNext 线程：" + android.os.Process.myTid());
+
+                        if (s.equals("1")) {
+                            disposable.dispose();//一旦调用了这个，下游就不会再接收事件了
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError "+e.getMessage());
+                        Log.e(TAG, "onError " + e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
                         Log.i(TAG, "onComplete");
-                        Log.i(TAG,"onComplete 线程："+android.os.Process.myTid());
+                        Log.i(TAG, "onComplete 线程：" + android.os.Process.myTid());
                     }
                 });
 
     }
 
+    /**
+     * 普通的观察者模式
+     */
     private void init1() {
         //三者的关系  创建被监听者，创建监听者，建立连接关系
 //        这个是普通版本，在哪个线程里面产生就在哪个线程里面消费
@@ -112,8 +149,9 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
-    public String getThreadPid(){
-       String threadPidName = Thread.currentThread().getName();
+    public String getThreadPid() {
+        String threadPidName = Thread.currentThread().getName();
         return threadPidName;
     }
 }
+
