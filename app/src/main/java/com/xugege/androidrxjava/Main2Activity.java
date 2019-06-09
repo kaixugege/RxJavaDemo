@@ -5,16 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 import io.reactivex.*;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-import java.lang.annotation.Annotation;
 
 public class Main2Activity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
+
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,27 +26,35 @@ public class Main2Activity extends AppCompatActivity {
 //        init1();
 //        init2();
 
-        init3();
+
     }
 
     /**
      * 异步的观察者模式
+     * <p>
+     * 上游线程只有第一次指定的有效，下游线程最终会切换至最后一个指定的线程。
      */
     private void init3() {
-        Observable.create(new ObservableOnSubscribe<String>() {
+        disposable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                 emitter.onNext("1");
                 emitter.onNext("2");
+                Log.i(TAG, "发射  2   线程：" + android.os.Process.myTid());
                 emitter.onNext("3");
             }
-        }).subscribe(new Consumer<String>() {
-            //只接受onnext事件
-            @Override
-            public void accept(String s) throws Exception {
-                Log.d(TAG, "收到 " + s);
-            }
-        });
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())//指定了上游的线程  Schedulers。computation()计算密集型  Scheduler.io()IO密集型
+                .observeOn(AndroidSchedulers.mainThread())//指定了下游的线程
+                .observeOn(Schedulers.computation())//指定了下游的线程
+                .subscribe(new Consumer<String>() {
+                    //只接受onnext事件
+                    @Override
+                    public void accept(String s) throws Exception {
+                        Log.i(TAG, "accept：" + s + "   线程：" + android.os.Process.myTid());
+                    }
+                });
     }
 
     /**
@@ -145,13 +155,28 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     public void btClick(View view) {
-        startActivity(new Intent(this, Main3Activity.class));
-
+//        startActivity(new Intent(this, OperatorActivity.class));
+        Log.i(TAG, "当前activity 线程：" + android.os.Process.myTid());
+        init3();
     }
 
-    public String getThreadPid() {
-        String threadPidName = Thread.currentThread().getName();
-        return threadPidName;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (disposable != null) {
+            if (disposable.isDisposed()) {
+                disposable.dispose();
+            }
+        }
+        disposable = null;
+    }
+
+
+    public void btClick2(View view) {
+        startActivity(new Intent(this, OperatorActivity.class));
+
     }
 }
 

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AndroidRxJava</string>
+    <string name="a">异步</string>
+    <string name="b">操作符</string>
 </resources>

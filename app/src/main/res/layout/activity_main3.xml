@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
+    android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Main3Activity">
+        tools:context=".OperatorActivity">
+    <Button
+        android:text="create"
+        android:onClick="createClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="just"
+        android:onClick="justClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:text="fromArray"
+        android:onClick="fromArrayClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="map"
+        android:onClick="mapClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="scan"
+        android:onClick="scanClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
