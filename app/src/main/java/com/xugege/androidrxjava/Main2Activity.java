@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.xugege.androidrxjava.retrofit.RetrofitActivity;
+
 import io.reactivex.*;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -176,6 +178,11 @@ public class Main2Activity extends AppCompatActivity {
 
     public void btClick2(View view) {
         startActivity(new Intent(this, OperatorActivity.class));
+
+    }
+
+    public void toRetrofitAct(View view) {
+        startActivity(new Intent(this, RetrofitActivity.class));
 
     }
 }

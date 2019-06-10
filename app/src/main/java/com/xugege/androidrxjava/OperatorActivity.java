@@ -11,6 +11,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
@@ -70,20 +71,54 @@ public class OperatorActivity extends AppCompatActivity {
 
     }
 
-    public void scanClick(View view) {
-
-//        Observable.range(1,10).scan(new Function<Integer,Integer,Integer>() {
-//            @Override
-//            public Integer apply(Integer integer) throws Exception {
-//                return null;
-//            }
-//        });
-
-
+    /**
+     * 将连续的两个值进行计算后不发射出去，返回给接口当做下一个计算的第一个参数
+     * 直到计算完毕之后再发射出去，所以 accept只会执行一次
+     * @param view
+     */
+    public void reduceClick(View view) {
+        Observable.range(1, 10).reduce(new BiFunction<Integer, Integer, Integer>() {
+            @Override
+            public Integer apply(Integer integer, Integer integer2) throws Exception {
+                Log.d(TAG, "apply integer=" + integer + "  integer2=" + integer2);
+                return integer + integer2;
+            }
+        }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                Log.d(TAG, "reduceClick " + integer);
+            }
+        });
 
     }
 
-    public class  CreateAction implements Observer<String>  {
+    public void filterClick(View view) {
+//        Observable.just(1, 2, 3, 5)
+//                .filter(new BiFunction<Integer, Boolean>() {
+//                    @Override
+//                    public Object apply(Object o, Object o2) throws Exception {
+//                        return null;
+//                    }
+//
+//                    @Override
+//                    public Boolean call(Integer integer) {
+//                        // 限制条件
+//                        return integer > 2;
+//                    }
+//                })
+//                .subscribe(<Integer>() {
+//
+////
+////                    @Override
+////                    public void call(Integer integer) {
+////                        Log.e("zpan", " filter =" + integer);
+////                    }
+//                });
+
+    }
+
+
+    public class CreateAction implements Observer<String> {
 
         @Override
         public void onSubscribe(Disposable d) {
@@ -92,7 +127,7 @@ public class OperatorActivity extends AppCompatActivity {
 
         @Override
         public void onNext(String s) {
-            Log.d(TAG,"CreateAction  onNext  "+s);
+            Log.d(TAG, "CreateAction  onNext  " + s);
         }
 
 
@@ -106,4 +141,31 @@ public class OperatorActivity extends AppCompatActivity {
 
         }
     }
+
+
+    /**
+     * 将第一个元素和第二个元素进行计算，并发射出去，这个结果再次返回给 这个applly 的第一个参数，
+     * 第二个参数就是list中的下一个值类似python的filter函数
+     * 注意：每一次计算之后都会发射
+     *
+     *  @param view
+     */
+    public void scanClick(View view) {
+
+        Observable.range(1, 10).scan(new BiFunction<Integer, Integer, Integer>() {
+            @Override
+            public Integer apply(Integer integer, Integer integer2) throws Exception {
+                Log.d(TAG, "apply integer=" + integer + "  integer2=" + integer2);
+                return integer + integer2;
+            }
+        }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                Log.d(TAG, "scanClick " + integer);
+            }
+        });
+    }
+
+
+
 }
