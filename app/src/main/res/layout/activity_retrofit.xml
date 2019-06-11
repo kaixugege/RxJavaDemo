@@ -8,10 +8,15 @@
     tools:context=".retrofit.RetrofitActivity">
 
     <Button
-        android:text="请求"
+        android:text="普通请求"
         android:onClick="requset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:text="请求"
+        android:onClick="rxjavaRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

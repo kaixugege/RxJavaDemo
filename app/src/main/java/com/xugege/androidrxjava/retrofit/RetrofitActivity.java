@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitActivity extends AppCompatActivity {
 
@@ -32,14 +33,15 @@ public class RetrofitActivity extends AppCompatActivity {
         RestServer.INSTANCE()
                 .setRetrofit(new Retrofit.Builder()
                         .baseUrl("https://www.baidu.com/")
+                        .addConverterFactory(ScalarsConverterFactory.create())
                         .build());
 
     }
 
     public void requset(View view) {
-        HashMap<Object, Object> filedMap = new HashMap<Object, Object>();
+        HashMap<String, Object> filedMap = new HashMap<String, Object>();
         requestService = RestServer.INSTANCE().getRetrofit().create(RequestService.class);
-        requestService.get("", filedMap).enqueue(new Callback<String>() {
+        requestService.get("https://www.baidu.com/", filedMap).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Log.i(TAG, "onResponse " + response.body());
@@ -50,5 +52,11 @@ public class RetrofitActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure  " + t.getMessage());
             }
         });
+    }
+
+    public void rxjavaRequest(View view) {
+        HttpClient.getInstance();
+
+
     }
 }
