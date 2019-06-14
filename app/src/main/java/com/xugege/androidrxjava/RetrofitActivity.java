@@ -11,9 +11,8 @@ import com.xugege.androidrxjava.net.retrofitrx.RxRestService;
 
 import java.util.HashMap;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -48,8 +47,8 @@ public class RetrofitActivity extends AppCompatActivity {
 
         RestServer.INSTANCE()
                 .setRetrofit(new Retrofit.Builder()
-//                        .baseUrl("https://www.baidu.com/")
-                        .baseUrl("https://blog.csdn.net")
+                        .baseUrl("https://www.baidu.com/")
+//                        .baseUrl("https://blog.csdn.net")
                         .addConverterFactory(ScalarsConverterFactory.create())
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .client(client)
@@ -76,70 +75,30 @@ public class RetrofitActivity extends AppCompatActivity {
     }
 
     public void rxjavaRequest(View view) {
-
-
-//        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
-//        //配置回调库，采用rxjava
-//        retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
-//        retrofitBuilder.baseUrl("https://www.baidu.com");
-//
-//
-//        File cacheFile = new File(getApplication().getExternalCacheDir(), "HttpCache");//缓存地址
-//        Cache cache = new Cache(cacheFile, 1024 * 1024 * 50); //大小50Mb
-//
-//        //设置缓存方式、时长、地址
-//
-//        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
-//        //启用 Log日志
-//        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-//        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        okHttpClientBuilder.addInterceptor(loggingInterceptor);//添加拦截器
-//
-//        //设置请求超时时长为15秒
-//        okHttpClientBuilder.connectTimeout(15, TimeUnit.SECONDS);
-//
-//
-//        okHttpClientBuilder.addNetworkInterceptor(cacheIntercepter);
-//        okHttpClientBuilder.addInterceptor(cacheIntercepter);
-//        okHttpClientBuilder.cache(cache);
-
-
         final RxRestService rxRestService;
-//        final Retrofit rrr = new Retrofit.Builder()
-//                .baseUrl("https://www.baidu.com/")
-//                .addConverterFactory(ScalarsConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .build();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//日志级别
+            builder.addInterceptor(loggingInterceptor);
+        }
+        OkHttpClient client = builder.build();
+        final Retrofit rrr = new Retrofit.Builder()
+                .baseUrl("https://www.baidu.com/")
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(client)
+                .build();
 
         rxRestService = RestServer.INSTANCE().getRetrofit().create(RxRestService.class);
         HashMap<String, Object> filedMap = new HashMap<String, Object>();
-        rxRestService.get("/weixin_33874713/article/details/87469630", filedMap)
-                .observeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<String>() {
+        rxRestService.get("", filedMap)
+                .subscribeOn(Schedulers.io())//指定被观察者执行的线程
+                .observeOn(AndroidSchedulers.mainThread())//指定观察者执行的线程
+                .subscribe(new Consumer<String>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.i(TAG, "onSubscribe ");
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-                        Log.i(TAG, "onNext " + s);
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        if (e == null){
-                            Log.e(TAG, "onError "+ "error = null"+e);
-                        }
-                        Log.e(TAG, "onError "+ e.getLocalizedMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.d(TAG, "onComplete ");
+                    public void accept(String s) throws Exception {
+                        Log.i(TAG, "accept " + s);
                     }
                 });
 
