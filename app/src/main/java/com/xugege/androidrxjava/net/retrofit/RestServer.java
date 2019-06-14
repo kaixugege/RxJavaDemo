@@ -1,4 +1,4 @@
-package com.xugege.androidrxjava.retrofit;
+package com.xugege.androidrxjava.net.retrofit;
 
 import retrofit2.Retrofit;
 

@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".retrofit.RetrofitActivity"></activity>
+        <activity android:name=".RetrofitActivity"></activity>
         <activity android:name=".OperatorActivity"></activity>
         <activity android:name=".Main2Activity"></activity>
         <activity android:name=".MainActivity">
