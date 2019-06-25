@@ -1,4 +1,4 @@
-package com.xugege.androidrxjava
+package com.xugege.rxjava
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.xugege.androidrxjava.net.retrofit;
+package com.xugege.rxjava.content.utils.net.retrofit;
 
 import okhttp3.OkHttpClient;
 

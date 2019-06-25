@@ -1,13 +1,15 @@
-package com.xugege.androidrxjava;
+package com.xugege.rxjava.content.utils.net;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.xugege.androidrxjava.net.retrofit.RequestService;
-import com.xugege.androidrxjava.net.retrofit.RestServer;
-import com.xugege.androidrxjava.net.retrofitrx.RxRestService;
+import com.xugege.rxjava.BuildConfig;
+import com.xugege.rxjava.R;
+import com.xugege.rxjava.content.utils.net.retrofit.RequestService;
+import com.xugege.rxjava.content.utils.net.retrofit.RestServer;
+import com.xugege.rxjava.content.utils.net.retrofitrx.RxRestService;
 
 import java.util.HashMap;
 

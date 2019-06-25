@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:Android="http://schemas.android.com/apk/distribution"
-    package="com.xugege.androidrxjava">
+    package="com.xugege.rxjava">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,10 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RetrofitActivity"></activity>
-        <activity android:name=".OperatorActivity"></activity>
-        <activity android:name=".Main2Activity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".content.utils.bus.RxbusActivity"></activity>
+        <activity android:name=".content.utils.net.RetrofitActivity" />
+        <activity android:name=".content.utils.operato.OperatorActivity" />
+        <activity android:name=".content.utils.content.Main2Activity" />
+        <activity android:name="com.xugege.rxjava.content.utils.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

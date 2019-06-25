@@ -1,9 +1,11 @@
-package com.xugege.androidrxjava;
+package com.xugege.rxjava.content.utils.operato;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import com.xugege.rxjava.R;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;

@@ -5,30 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Main2Activity">
+    tools:context=".content.utils.content.Main2Activity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="RxJava例子"
+        android:textSize="24sp" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bt_margin_top"
         android:onClick="btClick"
         android:text="@string/a" />
 
-    <Button
-        android:text="@string/b"
-        android:onClick="btClick2"
-        android:layout_width="wrap_content"
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="@dimen/bt_margin_top"
+        android:onClick="btClick2"
+        android:text="@string/b" />
 
 
-    <Button
-        android:text="Retrofit2 RxJava结合"
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bt_margin_top"
         android:onClick="toRetrofitAct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="Retrofit2 RxJava结合" />
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bt_margin_top"
+        android:onClick="toRxBusAct"
+        android:text="Retrofit2 RxBus" />
 
 </LinearLayout>

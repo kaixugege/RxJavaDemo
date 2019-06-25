@@ -1,10 +1,15 @@
-package com.xugege.androidrxjava;
+package com.xugege.rxjava.content.utils.content;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import com.xugege.rxjava.content.utils.operato.OperatorActivity;
+import com.xugege.rxjava.R;
+import com.xugege.rxjava.content.utils.testbus.RxbusActivity;
+import com.xugege.rxjava.content.utils.net.RetrofitActivity;
 
 import io.reactivex.*;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -182,6 +187,11 @@ public class Main2Activity extends AppCompatActivity {
     public void toRetrofitAct(View view) {
         startActivity(new Intent(this, RetrofitActivity.class));
 
+    }
+
+    public void toRxBusAct(View view) {
+
+        startActivity(new Intent(this, RxbusActivity.class));
     }
 }
 
