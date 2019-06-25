@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.xugege.rxjava.content.utils.bus.RxbusActivity;
 import com.xugege.rxjava.content.utils.operato.OperatorActivity;
 import com.xugege.rxjava.R;
-import com.xugege.rxjava.content.utils.testbus.RxbusActivity;
 import com.xugege.rxjava.content.utils.net.RetrofitActivity;
 
 import io.reactivex.*;
@@ -181,7 +181,6 @@ public class Main2Activity extends AppCompatActivity {
 
     public void btClick2(View view) {
         startActivity(new Intent(this, OperatorActivity.class));
-
     }
 
     public void toRetrofitAct(View view) {
